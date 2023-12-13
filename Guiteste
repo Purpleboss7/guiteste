@@ -1,140 +1,163 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+## Loadstring
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/deeeity/mercury-lib/master/src.lua"))()
+```
 
-local Window = Rayfield:CreateWindow({
-   Name = "🔥 Example Script Hub | Game 🔫",
-   LoadingTitle = "🔫 Gun Simulator 💥",
-   LoadingSubtitle = "by 1_F0",
-   ConfigurationSaving = {
-      Enabled = false,
-      FolderName = nil, -- Create a custom folder for your hub/game
-      FileName = "Example Hub"
-   },
+## Features:
+- Customizable (Themes)
+- Browser-Like navigation
+- Buttons
+- Sliders
+- Dropdowns
+- Inputs
+- Color Picker
+- Notifications
+- Prompts
+
+... more to be added.
+
+Created by [Deity#0228] and [Abstract#8007]
+
+## Documentation
+
+### Get the Library
+```lua
+local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/deeeity/mercury-lib/master/src.lua"))()
+```
+
+### Create the GUI
+```lua
+local GUI = Mercury:Create{
+    Name = "Mercury",
+    Size = UDim2.fromOffset(600, 400),
+    Theme = Mercury.Themes.Dark,
+    Link = "https://github.com/deeeity/mercury-lib"
+}
+```
+
+### Tabs
+```lua
+local Tab = GUI:Tab{
+	Name = "New Tab",
+	Icon = "rbxassetid://8569322835"
+}
+```
+
+### Buttons
+```lua
+Tab:Button{
+	Name = "Button",
+	Description = nil,
+	Callback = function() end
+}
+```
+
+### Toggles
+```lua
+Tab:Toggle{
+	Name = "Toggle",
+	StartingState = false,
+	Description = nil,
+	Callback = function(state) end
+}
+```
+
+### Textboxes
+```lua
+Tab:Textbox{
+	Name = "Textbox",
+	Callback = function(text) end
+}
+```
+
+### Dropdowns
+```lua
+local MyDropdown = Tab:Dropdown{
+	Name = "Dropdown",
+	StartingText = "Select...",
+	Description = nil,
+	Items = {
+		{"Hello", 1}, 		-- {name, value}
+		12,			-- or just value, which is also automatically taken as name
+		{"Test", "bump the thread pls"}
+	},
+	Callback = function(item) return end
+}
+
+MyDropdown:AddItems({
+	{"NewItem", 12},		-- {name, value}
+	400				-- or just value, which is also automatically taken as name
 })
 
-local MainTab = Window:CreateTab("🏠 Home", nil) -- Title, Image
-local MainSection = MainTab:CreateSection("Main")
-
-Rayfield:Notify({
-   Title = "You executed the script",
-   Content = "Very cool gui",
-   Duration = 5,
-   Image = 13047715178,
-   Actions = { -- Notification Buttons
-      Ignore = {
-         Name = "Okay!",
-         Callback = function()
-         print("The user tapped Okay!")
-      end
-   },
-},
+MyDropdown:RemoveItems({
+	"NewItem", "Hello"		-- just the names to get removed (upper/lower case ignored)
 })
 
-local Button = MainTab:CreateButton({
-   Name = "Infinite Jump Toggle",
-   Callback = function()
-       --Toggles the infinite jump between on or off on every script run
-_G.infinjump = not _G.infinjump
+MyDropdown:Clear()
+```
 
-if _G.infinJumpStarted == nil then
-	--Ensures this only runs once to save resources
-	_G.infinJumpStarted = true
-	
-	--Notifies readiness
-	game.StarterGui:SetCore("SendNotification", {Title="Youtube Hub"; Text="Infinite Jump Activated!"; Duration=5;})
+### Sliders
+```lua
+Tab:Slider{
+	Name = "Slider",
+	Default = 50,
+	Min = 0,
+	Max = 100,
+	Callback = function() end
+}
+```
 
-	--The actual infinite jump
-	local plr = game:GetService('Players').LocalPlayer
-	local m = plr:GetMouse()
-	m.KeyDown:connect(function(k)
-		if _G.infinjump then
-			if k:byte() == 32 then
-			humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-			humanoid:ChangeState('Jumping')
-			wait()
-			humanoid:ChangeState('Seated')
-			end
+### Keybinds
+```lua
+Tab:Keybind{
+	Name = "Keybind",
+	Keybind = nil,
+	Description = nil
+}
+```
+
+### Prompt
+```lua
+GUI:Prompt{
+	Followup = false,
+	Title = "Prompt",
+	Text = "Prompts are cool",
+	Buttons = {
+		ok = function()
+			return true
 		end
-	end)
-end
-   end,
-})
+		no = function()
+			return false
+		end
+	}
+}
+```
 
-local Slider = MainTab:CreateSlider({
-   Name = "WalkSpeed Slider",
-   Range = {1, 350},
-   Increment = 1,
-   Suffix = "Speed",
-   CurrentValue = 16,
-   Flag = "sliderws", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
-   end,
-})
+### Notification
+```lua
+GUI:Notification{
+	Title = "Alert",
+	Text = "You shall bump the thread on V3rmillion!",
+	Duration = 3,
+	Callback = function() end
+}
+```
 
-local Slider = MainTab:CreateSlider({
-   Name = "JumpPower Slider",
-   Range = {1, 350},
-   Increment = 1,
-   Suffix = "Speed",
-   CurrentValue = 16,
-   Flag = "sliderjp", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.JumpPower = (Value)
-   end,
-})
+### Color Picker
+```lua
+Tab:ColorPicker{
+	Style = Mercury.ColorPickerStyles.Legacy,
+	Callback = function(color) end
+}
+```
 
-local Dropdown = MainTab:CreateDropdown({
-   Name = "Select Area",
-   Options = {"Starter World","Pirate Island","Pineapple Paradise"},
-   CurrentOption = {"Starter World"},
-   MultipleOptions = false,
-   Flag = "dropdownarea", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Option)
-        print(Option)
-   end,
-})
-
-local Input = MainTab:CreateInput({
-   Name = "Walkspeed",
-   PlaceholderText = "1-500",
-   RemoveTextAfterFocusLost = true,
-   Callback = function(Text)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Text)
-   end,
-})
-
-local OtherSection = MainTab:CreateSection("Other")
-
-local Toggle = MainTab:CreateToggle({
-   Name = "Auto Farm",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-        print("FARMING")
-   end,
-})
-
-local TPTab = Window:CreateTab("🏝 Teleports", nil) -- Title, Image
-
-local Button1 = TPTab:CreateButton({
-   Name = "Starter Island",
-   Callback = function()
-        --Teleport1
-   end,
-})
-
-local Button2 = TPTab:CreateButton({
-   Name = "Pirate Island",
-   Callback = function()
-        --Teleport2
-   end,
-})
-
-local Button3 = TPTab:CreateButton({
-   Name = "Pineapple Paradise",
-   Callback = function()
-        --Teleport3
-   end,
-})
-
-local TPTab = Window:CreateTab("🎲 Misc", nil) -- Title, Image
+### Credit
+```lua
+GUI:Credit{
+	Name = "Creditor's name",
+	Description = "Helped with the script",
+	V3rm = "link/name",
+	Discord = "helo#1234"
+}
+```
+**PLEASE NOTE THAT THE LOWER- AND UPPERCASE LETTERS DON'T MATTER WHEN CALLING LIBRARY FUNCTIONS.**
