@@ -23,6 +23,30 @@ local function CreateLoop(func)
     end
 end
 
+-- Função para coletar instâncias
+local function CollectInstances(type, count)
+    local args = {
+        [1] = {
+            ["Type"] = type,
+            ["Action"] = "InstanceCollected",
+            ["Count"] = count
+        }
+    }
+
+    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+end
+
+-- Função para vender itens
+local function SellItems()
+    local args = {
+        [1] = {
+            ["Action"] = "Sold"
+        }
+    }
+
+    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+end
+
 -- Carregar o Script Hub
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -46,35 +70,13 @@ local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber
 
 -- Adicionar loops para coletar instâncias e vender itens
 CreateLoop(function()
-    local args = {
-        [1] = {
-            ["Type"] = "Stone",
-            ["Action"] = "InstanceCollected",
-            ["Count"] = 10000
-        }
-    }
-
-    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    CollectInstances("Stone", 10000)
 end)
 
 CreateLoop(function()
-    local args = {
-        [1] = {
-            ["Type"] = "EmeraldPice3",
-            ["Action"] = "InstanceCollected",
-            ["Count"] = 100
-        }
-    }
-
-    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    CollectInstances("EmeraldPice3", 100)
 end)
 
 CreateLoop(function()
-    local args = {
-        [1] = {
-            ["Action"] = "Sold"
-        }
-    }
-
-    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    SellItems()
 end)
