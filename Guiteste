@@ -5,28 +5,28 @@ local Window = Rayfield:CreateWindow({
     LoadingTitle = "Purple Script Hub",
     LoadingSubtitle = "by Teste",
     ConfigurationSaving = {
-       Enabled = true,
-       FolderName = nil,
-       FileName = "Big Hub"
+        Enabled = true,
+        FolderName = nil, 
+        FileName = "Big Hub"
     },
     Discord = {
-       Enabled = false,
-       Invite = "noinvitelink",
-       RememberJoins = true
+        Enabled = false,
+        Invite = "noinvitelink", 
+        RememberJoins = true 
     },
     KeySystem = false,
     KeySettings = {
-       Title = "Untitled",
-       Subtitle = "Key System",
-       Note = "No method of obtaining the key is provided",
-       FileName = "Key",
-       SaveKey = true,
-       GrabKeyFromSite = false,
-       Key = {"Hello"}
+        Title = "Untitled",
+        Subtitle = "Key System",
+        Note = "No method of obtaining the key is provided",
+        FileName = "Key", 
+        SaveKey = true, 
+        GrabKeyFromSite = false,
+        Key = {"Hello"}
     }
 })
 
-local PlayerTab = Window:CreateTab("Player", 4483362458)
+local PlayerTab = Window:CreateTab("Player", 4483362458) 
 
 local WalkSpeedSlider = PlayerTab:CreateSlider({
     Name = "WalkSpeed",
@@ -61,19 +61,5 @@ local JumpHeightSlider = PlayerTab:CreateSlider({
     Flag = "Slider3",
     Callback = function(Value)
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-    end,
-})
-
-local EquipBackpackButton = PlayerTab:CreateButton({
-    Name = "Equip Large Backpack",
-    Callback = function()
-        local args = {
-            [1] = {
-                ["Action"] = "EquipTool",
-                ["ToolName"] = "Large Backpack"
-            }
-        }
-
-        game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
     end,
 })
