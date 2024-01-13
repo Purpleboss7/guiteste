@@ -7,22 +7,15 @@ local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 200, 0, 300)
 frame.Position = UDim2.new(0, 10, 0, 10)
 frame.BackgroundTransparency = 0.5
-frame.BackgroundColor3 = Color3.fromRGB(148, 87, 235) -- Fundo roxo
-frame.Active = true
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
 frame.Parent = gui
-
--- Variáveis para controlar o estado do GUI
-local guiOpen = true
-local isDragging = false
-local offset = Vector2.new(0, 0)
 
 -- Função para criar botões
 local function createButton(name, action)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(0, 180, 0, 40)
     button.Position = UDim2.new(0, 10, 0, 10 + (#frame:GetChildren() * 50))
-    button.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Fundo branco
-    button.TextColor3 = Color3.fromRGB(0, 0, 0) -- Texto preto
+    button.BackgroundColor3 = Color3.new(1, 1, 1)
     button.Text = name
     button.Parent = frame
 
@@ -36,15 +29,7 @@ local function stopLoop()
     _G.Loop = false
 end
 
--- Função para abrir ou fechar o GUI
-local function toggleGUI()
-    guiOpen = not guiOpen
-    frame.Visible = guiOpen
-end
-
 -- Adicionar botões com funções
-createButton("Toggle GUI", toggleGUI)
-
 createButton("Collect Stones", function()
     _G.Loop = true
     while _G.Loop and task.wait() do
@@ -116,23 +101,3 @@ createButton("Sell Items", function()
 end)
 
 createButton("Stop Loop", stopLoop)
-
--- Adicionar funcionalidade de arrastar
-frame.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.UserInputType == Enum.UserInputType.MouseButton1 then
-        isDragging = true
-        offset = input.Position - frame.Position
-    end
-end)
-
-frame.InputChanged:Connect(function(input)
-    if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        frame.Position = UDim2.new(0, input.Position.X - offset.X, 0, input.Position.Y - offset.Y)
-    end
-end)
-
-frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        isDragging = false
-    end
-end)
