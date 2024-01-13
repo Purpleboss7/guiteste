@@ -74,6 +74,20 @@ local LargeBackpackButton = CreateButton(PlayerTab, "Equip Large Backpack", "Lar
 local CyberSwordButton = CreateButton(PlayerTab, "Equip Cyber Sword", "Cyber Sword", true)
 local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber Pickaxe", true)
 
+-- Adicionar botão para vender manualmente
+local SellButton = PlayerTab:CreateButton({
+    Name = "Vender",
+    Callback = function()
+        local sellArgs = {
+            [1] = {
+                ["Action"] = "Sold"
+            }
+        }
+
+        game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(sellArgs))
+    end,
+})
+
 -- Adicionar loops para coletar instâncias
 CreateLoop(function()
     CollectInstances("Stone", 10000)
