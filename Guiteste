@@ -63,17 +63,3 @@ local JumpHeightSlider = PlayerTab:CreateSlider({
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
     end,
 })
-
-local EquipBackpackButton = PlayerTab:CreateButton({
-    Name = "Equip Large Backpack",
-    Callback = function()
-        local args = {
-            [1] = {
-                ["Action"] = "EquipTool",
-                ["ToolName"] = "Large Backpack"
-            }
-        }
-
-        game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
-    end,
-})
