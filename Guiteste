@@ -14,13 +14,19 @@ local function CreateButton(tab, name, toolName, sellAfterEquip)
 
             if sellAfterEquip then
                 wait(2)  -- Adiciona um delay de 2 segundos
-                local sellArgs = {
-                    [1] = {
-                        ["Action"] = "Sold"
-                    }
-                }
 
-                game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(sellArgs))
+                local equippedTool = game.Players.LocalPlayer.Backpack:FindFirstChild(toolName) or game.Players.LocalPlayer.Character:FindFirstChild(toolName)
+                if equippedTool then
+                    local sellArgs = {
+                        [1] = {
+                            ["Action"] = "Sold"
+                        }
+                    }
+
+                    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(sellArgs))
+                else
+                    warn("A ferramenta não está equipada. A venda não será realizada.")
+                end
             end
         end,
     })
