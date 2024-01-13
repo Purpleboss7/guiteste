@@ -1,5 +1,5 @@
 -- Função para criar botão no Script Hub
-local function CreateButton(tab, name, toolName)
+local function CreateButton(tab, name, toolName, sellAfterEquip)
     return tab:CreateButton({
         Name = name,
         Callback = function()
@@ -11,6 +11,16 @@ local function CreateButton(tab, name, toolName)
             }
 
             game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+
+            if sellAfterEquip then
+                local sellArgs = {
+                    [1] = {
+                        ["Action"] = "Sold"
+                    }
+                }
+
+                game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(sellArgs))
+            end
         end,
     })
 end
@@ -36,17 +46,6 @@ local function CollectInstances(type, count)
     game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
 end
 
--- Função para vender itens
-local function SellItems()
-    local args = {
-        [1] = {
-            ["Action"] = "Sold"
-        }
-    }
-
-    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
-end
-
 -- Carregar o Script Hub
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -63,10 +62,10 @@ local Window = Rayfield:CreateWindow({
 
 local PlayerTab = Window:CreateTab("Player", 4483362458)
 
--- Adicionar botões para equipar ferramentas
-local LargeBackpackButton = CreateButton(PlayerTab, "Equip Large Backpack", "Large Backpack")
-local CyberSwordButton = CreateButton(PlayerTab, "Equip Cyber Sword", "Cyber Sword")
-local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber Pickaxe")
+-- Adicionar botões para equipar ferramentas e vender
+local LargeBackpackButton = CreateButton(PlayerTab, "Equip Large Backpack", "Large Backpack", true)
+local CyberSwordButton = CreateButton(PlayerTab, "Equip Cyber Sword", "Cyber Sword", true)
+local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber Pickaxe", true)
 
 -- Adicionar loops para coletar instâncias e vender itens
 CreateLoop(function()
@@ -75,8 +74,4 @@ end)
 
 CreateLoop(function()
     CollectInstances("EmeraldPice3", 100)
-end)
-
-CreateLoop(function()
-    SellItems()
 end)
