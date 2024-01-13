@@ -13,6 +13,7 @@ local function CreateButton(tab, name, toolName, sellAfterEquip)
             game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
 
             if sellAfterEquip then
+                wait(2)  -- Adiciona um delay de 2 segundos
                 local sellArgs = {
                     [1] = {
                         ["Action"] = "Sold"
@@ -28,7 +29,7 @@ end
 -- Função para criar loop com função específica
 local function CreateLoop(func)
     _G.Loop = true
-    while _G.Loop and task.wait() do
+    while _G.Loop and wait() do
         func()
     end
 end
@@ -67,7 +68,7 @@ local LargeBackpackButton = CreateButton(PlayerTab, "Equip Large Backpack", "Lar
 local CyberSwordButton = CreateButton(PlayerTab, "Equip Cyber Sword", "Cyber Sword", true)
 local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber Pickaxe", true)
 
--- Adicionar loops para coletar instâncias e vender itens
+-- Adicionar loops para coletar instâncias
 CreateLoop(function()
     CollectInstances("Stone", 10000)
 end)
