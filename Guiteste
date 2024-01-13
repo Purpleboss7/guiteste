@@ -1,32 +1,32 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-    Name = "Purple Boss Hub",
-    LoadingTitle = "Purple Script Hub",
-    LoadingSubtitle = "by Teste",
+    Name = "Tutorial Script Hub",
+    LoadingTitle = "Tutorial Script Hub",
+    LoadingSubtitle = "by Rolo",
     ConfigurationSaving = {
         Enabled = true,
-        FolderName = nil, 
+        FolderName = nil,
         FileName = "Big Hub"
     },
     Discord = {
         Enabled = false,
-        Invite = "noinvitelink", 
-        RememberJoins = true 
+        Invite = "noinvitelink",
+        RememberJoins = true
     },
     KeySystem = false,
     KeySettings = {
         Title = "Untitled",
         Subtitle = "Key System",
         Note = "No method of obtaining the key is provided",
-        FileName = "Key", 
-        SaveKey = true, 
+        FileName = "Key",
+        SaveKey = true,
         GrabKeyFromSite = false,
         Key = {"Hello"}
     }
 })
 
-local PlayerTab = Window:CreateTab("Player", 4483362458) 
+local PlayerTab = Window:CreateTab("Player", 4483362458)
 
 local WalkSpeedSlider = PlayerTab:CreateSlider({
     Name = "WalkSpeed",
@@ -36,7 +36,7 @@ local WalkSpeedSlider = PlayerTab:CreateSlider({
     CurrentValue = 10,
     Flag = "Slider1",
     Callback = function(Value)
-        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+        game.Players.LocalPlayer.Character:SetAttribute("SpeedMultiplier", Value)
     end,
 })
 
