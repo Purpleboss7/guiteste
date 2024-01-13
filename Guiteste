@@ -59,9 +59,12 @@ local WalkSpeedSlider = CreateSlider(PlayerTab, {
     CurrentValue = 10,
     Flag = "Slider1",
     Callback = function(Value)
-        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+        -- Ensure WalkSpeed is within the specified range
+        local clampedValue = math.clamp(Value, 10, 100)
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = clampedValue
     end,
 })
+
 
 -- Loop para coletar pedras
 _G.Loop1 = true
