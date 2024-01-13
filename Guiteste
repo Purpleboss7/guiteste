@@ -11,8 +11,10 @@ frame.BackgroundColor3 = Color3.fromRGB(148, 87, 235) -- Fundo roxo
 frame.Active = true
 frame.Parent = gui
 
--- Variável para controlar o estado do GUI
+-- Variáveis para controlar o estado do GUI
 local guiOpen = true
+local isDragging = false
+local offset = Vector2.new(0, 0)
 
 -- Função para criar botões
 local function createButton(name, action)
@@ -114,3 +116,23 @@ createButton("Sell Items", function()
 end)
 
 createButton("Stop Loop", stopLoop)
+
+-- Adicionar funcionalidade de arrastar
+frame.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.UserInputType == Enum.UserInputType.MouseButton1 then
+        isDragging = true
+        offset = input.Position - frame.Position
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        frame.Position = UDim2.new(0, input.Position.X - offset.X, 0, input.Position.Y - offset.Y)
+    end
+end)
+
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        isDragging = false
+    end
+end)
