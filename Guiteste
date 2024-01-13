@@ -1,106 +1,103 @@
--- Função para criar botão no Script Hub
-local function CreateButton(tab, name, toolName)
-    return tab:CreateButton({
-        Name = name,
-        Callback = function()
-            local args = {
-                [1] = {
-                    ["Action"] = "EquipTool",
-                    ["ToolName"] = toolName
-                }
+-- Criar um objeto ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer.PlayerGui
+
+-- Criar um objeto Frame para organizar os botões
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 200)
+frame.Position = UDim2.new(0, 10, 0, 10)
+frame.BackgroundTransparency = 0.5
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.Parent = gui
+
+-- Função para criar botões
+local function createButton(name, action)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 180, 0, 40)
+    button.Position = UDim2.new(0, 10, 0, 10 + (#frame:GetChildren() * 50))
+    button.BackgroundColor3 = Color3.new(1, 1, 1)
+    button.Text = name
+    button.Parent = frame
+
+    button.MouseButton1Click:Connect(function()
+        action()
+    end)
+end
+
+-- Função para parar o loop
+local function stopLoop()
+    _G.Loop = false
+end
+
+-- Adicionar botões com funções
+createButton("Collect Stones", function()
+    _G.Loop = true
+    while _G.Loop and task.wait() do
+        local args = {
+            [1] = {
+                ["Type"] = "Stone",
+                ["Action"] = "InstanceCollected",
+                ["Count"] = 10000
             }
+        }
+        game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    end
+end)
 
-            game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
-        end,
-    })
-end
-
--- Função para criar slider no Script Hub
-local function CreateSlider(tab, sliderConfig)
-    return tab:CreateSlider({
-        Name = sliderConfig.Name,
-        Range = sliderConfig.Range,
-        Increment = sliderConfig.Increment,
-        Suffix = sliderConfig.Suffix,
-        CurrentValue = sliderConfig.CurrentValue,
-        Flag = sliderConfig.Flag,
-        Callback = sliderConfig.Callback,
-    })
-end
-
--- Carregar o Script Hub
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local Window = Rayfield:CreateWindow({
-    Name = "Roblox Script Hub",
-    LoadingTitle = "Script Hub",
-    LoadingSubtitle = "by OpenAI",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = nil,
-        FileName = "ScriptHubSettings"
-    },
-})
-
-local PlayerTab = Window:CreateTab("Player", 4483362458)
-
--- Adicionar botões para equipar ferramentas
-local CyberSwordButton = CreateButton(PlayerTab, "Equip Cyber Sword", "Cyber Sword")
-local LargeBackpackButton = CreateButton(PlayerTab, "Equip Large Backpack", "Large Backpack")
-local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber Pickaxe")
-local FourthButton = CreateButton(PlayerTab, "Custom Button 4", "Custom Tool 4")  -- Adicionando um quarto botão
-
--- Adicionar slider para ajustar a velocidade de caminhada
-local WalkSpeedSlider = CreateSlider(PlayerTab, {
-    Name = "WalkSpeed",
-    Range = {10, 100},
-    Increment = 1,
-    Suffix = "Speed",
-    CurrentValue = 10,
-    Flag = "Slider1",
-    Callback = function(Value)
-        -- Ensure WalkSpeed is within the specified range
-        local clampedValue = math.clamp(Value, 10, 100)
-        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = clampedValue
-    end,
-})
-
-
--- Loop para coletar pedras
-_G.Loop1 = true
-while _G.Loop1 and wait() do
+createButton("Equip Large Backpack", function()
     local args = {
         [1] = {
-            ["Type"] = "Stone",
-            ["Action"] = "InstanceCollected",
-            ["Count"] = 10000
+            ["Action"] = "EquipTool",
+            ["ToolName"] = "Large Backpack"
         }
     }
     game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
-end
+end)
 
--- Equipar ferramentas
-CyberSwordButton()
-LargeBackpackButton()
-CyberPickaxeButton()
-
--- Loop para coletar esmeraldas
-_G.Loop2 = true
-while _G.Loop2 and wait() do
+createButton("Equip Cyber Sword", function()
     local args = {
         [1] = {
-            ["Type"] = "EmeraldPice3",
-            ["Action"] = "InstanceCollected",
-            ["Count"] = 100
+            ["Action"] = "EquipTool",
+            ["ToolName"] = "Cyber Sword"
         }
     }
     game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
-end
+end)
 
--- Soldar
-local args = {
-    [1] = {
-        ["Action"] = "Sold"
+createButton("Equip Cyber Pickaxe", function()
+    local args = {
+        [1] = {
+            ["Action"] = "EquipTool",
+            ["ToolName"] = "Cyber Pickaxe"
+        }
     }
-}
-game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+end)
+
+createButton("Collect Emeralds", function()
+    _G.Loop = true
+    while _G.Loop and task.wait() do
+        local args = {
+            [1] = {
+                ["Type"] = "EmeraldPice3",
+                ["Action"] = "InstanceCollected",
+                ["Count"] = 100
+            }
+        }
+        game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    end
+end)
+
+createButton("Sell Items", function()
+    _G.Loop = true
+    while _G.Loop and task.wait(1) do
+        local args = {
+            [1] = {
+                ["Action"] = "Sold"
+            }
+        }
+        game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+    end
+end)
+
+createButton("Stop Loop", stopLoop)
