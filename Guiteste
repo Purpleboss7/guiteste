@@ -39,9 +39,10 @@ local Window = Rayfield:CreateWindow({
      CurrentValue = 10,
      Flag = "Slider1", -- Uma flag é o identificador para o arquivo de configuração. Certifique-se de que cada elemento tenha uma flag diferente se estiver usando salvamento de configuração para garantir que não haja sobreposições.
      Callback = function(Value)
-         game.Players.LocalPlayer.Character:SetAttribute("SpeedMultiplier", Value)
+         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
      end,
  })
+ 
  
 
  local Slider = PlayerTab:CreateSlider({
