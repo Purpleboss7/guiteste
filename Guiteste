@@ -7,7 +7,7 @@ local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 200, 0, 300)
 frame.Position = UDim2.new(0, 10, 0, 10)
 frame.BackgroundTransparency = 0.5
-frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BackgroundColor3 = Color3.fromRGB(148, 87, 235) -- Fundo roxo
 frame.Parent = gui
 
 -- Função para criar botões
@@ -15,7 +15,8 @@ local function createButton(name, action)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(0, 180, 0, 40)
     button.Position = UDim2.new(0, 10, 0, 10 + (#frame:GetChildren() * 50))
-    button.BackgroundColor3 = Color3.new(1, 1, 1)
+    button.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Fundo branco
+    button.TextColor3 = Color3.fromRGB(0, 0, 0) -- Texto preto
     button.Text = name
     button.Parent = frame
 
