@@ -8,7 +8,11 @@ frame.Size = UDim2.new(0, 200, 0, 300)
 frame.Position = UDim2.new(0, 10, 0, 10)
 frame.BackgroundTransparency = 0.5
 frame.BackgroundColor3 = Color3.fromRGB(148, 87, 235) -- Fundo roxo
+frame.Active = true
 frame.Parent = gui
+
+-- Variável para controlar o estado do GUI
+local guiOpen = true
 
 -- Função para criar botões
 local function createButton(name, action)
@@ -30,7 +34,15 @@ local function stopLoop()
     _G.Loop = false
 end
 
+-- Função para abrir ou fechar o GUI
+local function toggleGUI()
+    guiOpen = not guiOpen
+    frame.Visible = guiOpen
+end
+
 -- Adicionar botões com funções
+createButton("Toggle GUI", toggleGUI)
+
 createButton("Collect Stones", function()
     _G.Loop = true
     while _G.Loop and task.wait() do
