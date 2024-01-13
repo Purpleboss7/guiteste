@@ -4,7 +4,7 @@ gui.Parent = game.Players.LocalPlayer.PlayerGui
 
 -- Criar um objeto Frame para organizar os botões
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 200)
+frame.Size = UDim2.new(0, 200, 0, 300)
 frame.Position = UDim2.new(0, 10, 0, 10)
 frame.BackgroundTransparency = 0.5
 frame.BackgroundColor3 = Color3.new(0, 0, 0)
