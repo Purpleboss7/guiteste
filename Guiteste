@@ -1,65 +1,80 @@
+-- Função para criar botão no Script Hub
+local function CreateButton(tab, name, toolName)
+    return tab:CreateButton({
+        Name = name,
+        Callback = function()
+            local args = {
+                [1] = {
+                    ["Action"] = "EquipTool",
+                    ["ToolName"] = toolName
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+        end,
+    })
+end
+
+-- Função para criar loop com função específica
+local function CreateLoop(func)
+    _G.Loop = true
+    while _G.Loop and task.wait() do
+        func()
+    end
+end
+
+-- Carregar o Script Hub
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-    Name = "Tutorial Script Hub",
-    LoadingTitle = "Tutorial Script Hub",
-    LoadingSubtitle = "by Rolo",
+    Name = "Roblox Script Hub",
+    LoadingTitle = "Script Hub",
+    LoadingSubtitle = "by OpenAI",
     ConfigurationSaving = {
         Enabled = true,
         FolderName = nil,
-        FileName = "Big Hub"
+        FileName = "ScriptHubSettings"
     },
-    Discord = {
-        Enabled = false,
-        Invite = "noinvitelink",
-        RememberJoins = true
-    },
-    KeySystem = false,
-    KeySettings = {
-        Title = "Untitled",
-        Subtitle = "Key System",
-        Note = "No method of obtaining the key is provided",
-        FileName = "Key",
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = {"Hello"}
-    }
 })
 
 local PlayerTab = Window:CreateTab("Player", 4483362458)
 
-local WalkSpeedSlider = PlayerTab:CreateSlider({
-    Name = "WalkSpeed",
-    Range = {10, 100},
-    Increment = 1,
-    Suffix = "Speed",
-    CurrentValue = 10,
-    Flag = "Slider1",
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character:SetAttribute("SpeedMultiplier", Value)
-    end,
-})
+-- Adicionar botões para equipar ferramentas
+local LargeBackpackButton = CreateButton(PlayerTab, "Equip Large Backpack", "Large Backpack")
+local CyberSwordButton = CreateButton(PlayerTab, "Equip Cyber Sword", "Cyber Sword")
+local CyberPickaxeButton = CreateButton(PlayerTab, "Equip Cyber Pickaxe", "Cyber Pickaxe")
 
-local DashLengthSlider = PlayerTab:CreateSlider({
-    Name = "Dash length",
-    Range = {10, 1000},
-    Increment = 1,
-    Suffix = "Length",
-    CurrentValue = 10,
-    Flag = "Slider2",
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character:SetAttribute("DashLength", Value)
-    end,
-})
+-- Adicionar loops para coletar instâncias e vender itens
+CreateLoop(function()
+    local args = {
+        [1] = {
+            ["Type"] = "Stone",
+            ["Action"] = "InstanceCollected",
+            ["Count"] = 10000
+        }
+    }
 
-local JumpHeightSlider = PlayerTab:CreateSlider({
-    Name = "Jump Height",
-    Range = {10, 500},
-    Increment = 1,
-    Suffix = "Height",
-    CurrentValue = 10,
-    Flag = "Slider3",
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-    end,
-})
+    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+end)
+
+CreateLoop(function()
+    local args = {
+        [1] = {
+            ["Type"] = "EmeraldPice3",
+            ["Action"] = "InstanceCollected",
+            ["Count"] = 100
+        }
+    }
+
+    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+end)
+
+CreateLoop(function()
+    local args = {
+        [1] = {
+            ["Action"] = "Sold"
+        }
+    }
+
+    game:GetService("ReplicatedStorage").Remotes.GuiEvent:FireServer(unpack(args))
+end)
