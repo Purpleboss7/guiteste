@@ -1,3 +1,45 @@
+_G.Loop = true
+while _G.Loop and task.wait() do
+    local args = {
+        [1] = "Cat"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
+
+
+_G.Loop = true
+while _G.Loop and task.wait() do
+    local args = {
+        [1] = "Pig"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
+
+_G.Loop = true
+while _G.Loop and task.wait() do
+    local args = {
+        [1] = "Dog"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
+
+_G.Loop = true
+while _G.Loop and task.wait() do
+    local args = {
+        [1] = "Bear"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
+
+
 -- Criar um objeto ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Parent = game.Players.LocalPlayer.PlayerGui
@@ -120,44 +162,4 @@ createButton("Hatch Pet", function()
     end
 end)
 
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Cat"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
-
-
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Pig"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
-
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Dog"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
-
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Bear"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
 
