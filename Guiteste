@@ -120,25 +120,44 @@ createButton("Hatch Pet", function()
     end
 end)
 
--- Adicionar botão para deletar pets
-createButton("Delete Pets", function()
-    local petNames = {"Cat", "Pig", "Dog", "Bear"}
+_G.Loop = true
+while _G.Loop and task.wait(1) do
+    local args = {
+        [1] = "Cat"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
 
-    for _, name in ipairs(petNames) do
-        _G.Loop = true
 
-        spawn(function()
-            while _G.Loop and task.wait(1) do
-                local args = {[1] = name}
-                local success, errorMsg = pcall(function()
-                    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-                end)
+_G.Loop = true
+while _G.Loop and task.wait(1) do
+    local args = {
+        [1] = "Pig"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
 
-                if not success then
-                    warn("Error deleting pet:", errorMsg)
-                end
-            end
-        end)
-    end
-end)
+_G.Loop = true
+while _G.Loop and task.wait(1) do
+    local args = {
+        [1] = "Dog"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
+
+_G.Loop = true
+while _G.Loop and task.wait(1) do
+    local args = {
+        [1] = "Bear"
+    }
+    
+    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    
+end
 
