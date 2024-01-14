@@ -121,7 +121,7 @@ createButton("Hatch Pet", function()
 end)
 
 _G.Loop = true
-while _G.Loop and task.wait(1) do
+while _G.Loop and task.wait() do
     local args = {
         [1] = "Cat"
     }
@@ -132,7 +132,7 @@ end
 
 
 _G.Loop = true
-while _G.Loop and task.wait(1) do
+while _G.Loop and task.wait() do
     local args = {
         [1] = "Pig"
     }
@@ -142,7 +142,7 @@ while _G.Loop and task.wait(1) do
 end
 
 _G.Loop = true
-while _G.Loop and task.wait(1) do
+while _G.Loop and task.wait() do
     local args = {
         [1] = "Dog"
     }
@@ -152,7 +152,7 @@ while _G.Loop and task.wait(1) do
 end
 
 _G.Loop = true
-while _G.Loop and task.wait(1) do
+while _G.Loop and task.wait() do
     local args = {
         [1] = "Bear"
     }
