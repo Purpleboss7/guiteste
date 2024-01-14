@@ -1,43 +1,26 @@
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Cat"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
+-- Adicionar botão para deletar pets
+createButton("Delete Pets", function()
+    local petNames = {"Cat", "Pig", "Dog", "Bear"}
 
+    for _, name in ipairs(petNames) do
+        _G.Loop = true
 
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Pig"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
+        spawn(function()
+            while _G.Loop and task.wait(1) do
+                local args = {[1] = name}
+                local success, errorMsg = pcall(function()
+                    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+                end)
 
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Dog"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
+                if not success then
+                    warn("Error deleting pet:", errorMsg)
+                end
+            end
+        end)
+        wait(0.1)  -- Adiciona um pequeno atraso entre cada loop para garantir que eles não ocorram ao mesmo tempo
+    end
+end)
 
-_G.Loop = true
-while _G.Loop and task.wait() do
-    local args = {
-        [1] = "Bear"
-    }
-    
-    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-    
-end
 
 
 -- Criar um objeto ScreenGui
