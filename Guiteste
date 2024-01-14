@@ -120,20 +120,27 @@ createButton("Hatch Pet", function()
     end
 end)
 
--- ... (seu código anterior)
-
 -- Adicionar botão para deletar pets
 createButton("Delete Pets", function()
     for _, name in ipairs(petNames) do
         local args = {[1] = name}
 
         spawn(function()
-            local success, errorMsg = pcall(function()
-                game:GetService("ReplicatedStorage"):WaitForChild("PetsFolder"):WaitForChild("Remotes"):WaitForChild("DeletePet"):FireServer(unpack(args))
-            end)
+            local petsFolder = game:GetService("ReplicatedStorage"):WaitForChild("PetsFolder")
+            local remotes = petsFolder:WaitForChild("Remotes")
+            local deletePetRemote = remotes:WaitForChild("DeletePet")
 
-            if not success then
-                warn("Error deleting pet:", errorMsg)
+            local pet = petsFolder:FindFirstChild(name)
+            if pet then
+                local success, errorMsg = pcall(function()
+                    deletePetRemote:FireServer(unpack(args))
+                end)
+
+                if not success then
+                    warn("Error deleting pet:", errorMsg)
+                end
+            else
+                warn("Pet not found:", name)
             end
         end)
     end
