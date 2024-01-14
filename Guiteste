@@ -122,26 +122,23 @@ end)
 
 -- Adicionar botão para deletar pets
 createButton("Delete Pets", function()
+    local petNames = {"Cat", "Pig", "Dog", "Bear"}
+
     for _, name in ipairs(petNames) do
-        local args = {[1] = name}
+        _G.Loop = true
 
         spawn(function()
-            local petsFolder = game:GetService("ReplicatedStorage"):WaitForChild("PetsFolder")
-            local remotes = petsFolder:WaitForChild("Remotes")
-            local deletePetRemote = remotes:WaitForChild("DeletePet")
-
-            local pet = petsFolder:FindFirstChild(name)
-            if pet then
+            while _G.Loop and task.wait(1) do
+                local args = {[1] = name}
                 local success, errorMsg = pcall(function()
-                    deletePetRemote:FireServer(unpack(args))
+                    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
                 end)
 
                 if not success then
                     warn("Error deleting pet:", errorMsg)
                 end
-            else
-                warn("Pet not found:", name)
             end
         end)
     end
 end)
+
