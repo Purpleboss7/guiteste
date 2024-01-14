@@ -4,23 +4,23 @@ gui.Parent = game.Players.LocalPlayer.PlayerGui
 
 -- Criar um objeto Frame para organizar os botões
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 300)
-frame.Position = UDim2.new(0, 10, 0, 10)
-frame.BackgroundColor3 = Color3.fromRGB(50, 0, 50) -- Fundo roxo escuro
-frame.Active = true
+frame.Size = UDim2.new(0, 0, 0, 0)
+frame.Position = UDim2.new(0.6, 5, 0.2, 5)
+frame.BackgroundTransparency = 0
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 1
 frame.Parent = gui
-
--- Variáveis para controlar o estado do GUI
-local guiOpen = true
-local isDragging = false
-local offset = Vector2.new(0, 0)
 
 -- Função para criar botões
 local function createButton(name, action)
     local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0, 180, 0, 40)
-    button.Position = UDim2.new(0, 10, 0, 10 + (#frame:GetChildren() * 50))
-    button.BackgroundColor3 = Color3.fromRGB(1, 1, 1)
+    button.Size = UDim2.new(0, 120, 0, 30)
+    button.Position = UDim2.new(5, 10, 0, 10 + (#frame:GetChildren() * 40))
+    button.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+    button.BorderColor3 = Color3.new(0, 0, 0)
+    button.BorderSizePixel = 2
+    button.TextColor3 = Color3.new(1, 1, 1)
     button.Text = name
     button.Parent = frame
 
@@ -34,22 +34,7 @@ local function stopLoop()
     _G.Loop = false
 end
 
--- Função para mover o GUI
-local function startDrag()
-    isDragging = true
-    offset = frame.Position - UDim2.new(0, mouse.X, 0, mouse.Y)
-end
-
-local function stopDrag()
-    isDragging = false
-end
-
 -- Adicionar botões com funções
-createButton("Toggle GUI", function()
-    guiOpen = not guiOpen
-    frame.Visible = guiOpen
-end)
-
 createButton("Collect Stones", function()
     _G.Loop = true
     while _G.Loop and task.wait() do
@@ -122,21 +107,37 @@ end)
 
 createButton("Stop Loop", stopLoop)
 
--- Adicionar funcionalidade de arrastar
-frame.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.UserInputType == Enum.UserInputType.MouseButton1 then
-        startDrag()
+-- Adicionar botão para chocar pets
+createButton("Hatch Pet", function()
+    _G.Loop = true
+    while _G.Loop and task.wait(1) do
+        local args = {
+            [1] = workspace.Incubators.Basic,
+            [2] = 3
+        }
+
+        game:GetService("ReplicatedStorage").PetsFolder.Remotes.HatchPet:FireServer(unpack(args))
     end
 end)
 
-frame.InputChanged:Connect(function(input)
-    if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        frame.Position = UDim2.new(0, input.Position.X + offset.X, 0, input.Position.Y + offset.Y)
-    end
-end)
+-- Adicionar botão para deletar pets
+createButton("Delete Pets", function()
+    _G.Loop = true
+    while _G.Loop and task.wait(1) do
+        local petNames = {"Pet1", "Pet2", "Pet3"}  -- Substitua com os nomes dos seus pets
 
-frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        stopDrag()
+        for _, name in ipairs(petNames) do
+            local args = {[1] = name}
+
+            spawn(function()
+                local success, errorMsg = pcall(function()
+                    game:GetService("ReplicatedStorage"):WaitForChild("PetsFolder"):WaitForChild("Remotes"):WaitForChild("DeletePet"):FireServer(unpack(args))
+                end)
+
+                if not success then
+                    warn("Error deleting pet:", errorMsg)
+                end
+            end)
+        end
     end
 end)
