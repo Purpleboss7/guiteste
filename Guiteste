@@ -1,28 +1,3 @@
--- Adicionar botão para deletar pets
-createButton("Delete Pets", function()
-    local petNames = {"Cat", "Pig", "Dog", "Bear"}
-
-    for _, name in ipairs(petNames) do
-        _G.Loop = true
-
-        spawn(function()
-            while _G.Loop and task.wait(1) do
-                local args = {[1] = name}
-                local success, errorMsg = pcall(function()
-                    game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
-                end)
-
-                if not success then
-                    warn("Error deleting pet:", errorMsg)
-                end
-            end
-        end)
-        wait(0.1)  -- Adiciona um pequeno atraso entre cada loop para garantir que eles não ocorram ao mesmo tempo
-    end
-end)
-
-
-
 -- Criar um objeto ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Parent = game.Players.LocalPlayer.PlayerGui
@@ -143,6 +118,30 @@ createButton("Hatch Pet", function()
 
         game:GetService("ReplicatedStorage").PetsFolder.Remotes.HatchPet:FireServer(unpack(args))
     end
+end)
+
+-- Function to delete pets in a loop
+local function deletePetsLoop(petName)
+    _G.Loop = true
+    while _G.Loop and wait() do
+        local args = {[1] = petName}
+        game:GetService("ReplicatedStorage").PetsFolder.Remotes.DeletePet:FireServer(unpack(args))
+    end
+end
+
+createButton("Delete All Pets", function()
+    spawn(function()
+        _G.Loop = false  -- Stop any existing loops
+        
+        local petNamesToDelete = {"Cat", "Pig", "Dog", "Bear"}
+        
+        -- Start a deletion loop for each pet name
+        for _, petName in ipairs(petNamesToDelete) do
+            spawn(function()
+                deletePetsLoop(petName)
+            end)
+        end
+    end)
 end)
 
 
